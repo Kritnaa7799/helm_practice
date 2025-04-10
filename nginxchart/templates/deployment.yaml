@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx-proxy           # Pod label to be used by Service to select the pods from this deployment
+  replicas: 2                 # number of replica of the Pods
+  template:
+    metadata:
+      labels:
+        env: dev         # Pod's label
+        app: nginx-proxy
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx-image:latest     # which image it will use
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 80     # Port exposed by container inside the Pod
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    version: v1       # label of the service
+spec:
+  type: NodePort
+  ports:
+  - port: 80            # the port on which the service is listening
+    protocol: TCP
+    targetPort: 80     # the port exposed by Pod (we defined in the deployment)
+  selector:
+    app: nginx-proxy
