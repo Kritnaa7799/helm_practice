@@ -1,11 +1,9 @@
-# Use the official NGINX image from Docker Hub
-FROM nginx:alpine
+FROM ubuntu:latest
 
-# Copy custom NGINX configuration file into the container
-COPY nginx.conf /etc/nginx/nginx.conf
+RUN apt-get update && \
+     apt install -y nginx
 
-# Expose port 80 for the web server
-EXPOSE 80
+COPY nginx.conf /etc/nginx/sites-available/default
+EXPOSE 8080
 
-# Start NGINX when the container runs
 CMD ["nginx", "-g", "daemon off;"]

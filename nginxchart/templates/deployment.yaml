@@ -12,10 +12,11 @@ spec:
       labels:
         env: dev         # Pod's label
         app: nginx-proxy
+        id: c0929678
     spec:
       containers:
       - name: nginx-container
-        image: nginx-image:latest     # which image it will use
+        image: new-nginx-image:v1     # which image it will use
         imagePullPolicy: Never
 
         ports:
